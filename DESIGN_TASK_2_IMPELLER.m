@@ -8,6 +8,7 @@ r = linspace(0.1, 0.5, n)
 rho = zeros(1, n)
 b_n = zeros(1, n)
 h = zeros(1, n)
+P_0 = zeros(1, n)
 
 % Initial data
 
@@ -23,7 +24,7 @@ T(1) = 309.34                           % Initial temperature
 rho_initial = 1.28
 rho(1) = rho_initial                    % Initial air density
 R = 287                                 % Perfect gas constant for air (in J/(kg.K))
-P_0 = 1*10^5                            % Initial stagnation pressure
+P_0(1) = 1*10^5                         % Initial stagnation pressure
 
 r = linspace(0.1, 0.5, 100)
 
@@ -59,8 +60,11 @@ T = h./c_p
 % temperature, which will be used for the pressure calculation
 T_0 = T + (C.^2)/(2*c_p) 
 
+% Stagnation pressure
+P_0 = P_0(1)*((T_0*eta)/T_0(1)).^(k/(eta*(k-1)))
+
 % Static pressure from stagnation values
-P = P_0 * (T./T_0).^(k/(k-1))
+P = P_0 .* (T./T_0).^(k/(k-1))
 
 % Density along the radius
 rho = P./(R.*T)
